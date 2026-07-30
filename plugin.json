@@ -1,0 +1,42 @@
+{
+  "id": "modeling",
+  "kind": "plugin",
+  "version": "1.0.12",
+  "label": "UEFN Modeling",
+  "description": "Static mesh info and collision. Bundles the modeling skill.",
+  "min_app_version": "1.0.0",
+  "default_enabled": true,
+  "secret_keys": [],
+  "contributes": {
+    "agent.tools": {
+      "category": "modeling",
+      "tools": [
+        "get_static_mesh_info",
+        "set_mesh_collision"
+      ],
+      "intent_pattern": "\\b(mesh|collision|lod|nanite|modeling|static\\s*mesh)\\b",
+      "plan_tools": [
+        "get_static_mesh_info"
+      ]
+    },
+    "walkthrough": {
+      "id": "modeling",
+      "title": "Modeling tools ready",
+      "auto_start": "first_enable",
+      "settings_tab": "Store",
+      "steps": [
+        {
+          "target": "settings.store.root",
+          "title": "Modeling tools ready",
+          "body": "Modeling MCP tools are live. Ask for static mesh info, collision, LODs, or Geometry Scripting ops.",
+          "advance": "next",
+          "mode": "rect"
+        }
+      ]
+    }
+  },
+  "backend": {
+    "entry": "backend",
+    "register": "register"
+  }
+}
