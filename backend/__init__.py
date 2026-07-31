@@ -5,5 +5,5 @@ from __future__ import annotations
 
 def register(api) -> None:
     """Import gated MCP tools onto the shared FastMCP instance."""
-    import backend.tools.modeling  # noqa: F401
+    import backend.tools.modeling.modeling  # noqa: F401
     api.log("modeling tools registered")

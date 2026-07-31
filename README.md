@@ -11,4 +11,4 @@ Install or update from **Settings → Store** in the app — do not install from
 py scripts/build_zip.py
 ```
 
-Writes `deploy/modeling-*.ducky-plugin.zip` (scripts/ and deploy/ are not packed).
+Writes `deploy/modeling-1.0.11.ducky-plugin.zip` (scripts/ and deploy/ are not packed).
