@@ -2,16 +2,19 @@
 source_plugin_id: modeling
 name: modeling
 description: "Model and process meshes in UEFN — import FBX/glTF, LODs, collision, UVs, Nanite, and Geometry Scripting (booleans, remesh, repair, bake)"
-license: All Rights Reserved
+license: Ducky Source-Available License v1.0
 metadata:
   label: UEFN Modeling
-  version: 5
+  version: 6
   author: UEFN-Ducky
   copyright: Copyright 2026 UEFN-Ducky
   allow_redistribute: false
 ---
 
 # UEFN Modeling — meshes and geometry
+
+**SERIAL:** never parallel `spawn_actor` / `save_current_level` with other heavy
+editor calls in the same turn (`skill_read_subskill("uefn", "batch_commands")`).
 
 Mesh and geometry work in UEFN is **editor-only** Python. Two engines cover it:
 `StaticMeshEditorSubsystem` (LODs / collision / UVs / Nanite) and
