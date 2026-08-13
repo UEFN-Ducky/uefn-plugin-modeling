@@ -39,7 +39,7 @@ Name assets clearly: `SM_Chest_Body`, `SM_Chest_Lid` — not generic `Cube` /
 4. **Normals** — fix flipped faces; remesh/repair if needed
    (`skill_read_subskill("modeling", "geometry_scripting")`).
 5. **Merge** non-moving pieces (see below) into `{content_root}Meshes/SM_Name`
-   (e.g. `/VideoTest/Meshes/SM_Name`).
+   (e.g. `/MyProject/Meshes/SM_Name`).
 6. **UVs** — UV0 for textures; UV1 / lightmap channel if needed.
 7. **Materials** — plan slots (wood / metal / glass…), create `M_` / `MI_` /
    `T_` assets via the `materials` skill, assign to slots.
@@ -59,8 +59,8 @@ import unreal
 
 actors = [...]  # StaticMeshActors to merge (non-moving pieces only)
 opts = unreal.MergeStaticMeshActorsOptions()
-# FIRST: get_project_info() → content_root (e.g. /VideoTest/)
-opts.set_editor_property("base_package_name", "/VideoTest/Meshes/SM_MyProp")
+# FIRST: get_project_info() → content_root (e.g. /MyProject/)
+opts.set_editor_property("base_package_name", "/MyProject/Meshes/SM_MyProp")
 opts.set_editor_property("new_actor_label", "SM_MyProp")
 opts.set_editor_property("spawn_merged_actor", True)
 opts.set_editor_property("destroy_source_actors", True)

@@ -5,7 +5,7 @@ description: "Model and process meshes in UEFN — import FBX/glTF, LODs, collis
 license: Ducky Source-Available License v1.0
 metadata:
   label: UEFN Modeling
-  version: 6
+  version: 7
   author: UEFN-Ducky
   copyright: Copyright 2026 UEFN-Ducky
   allow_redistribute: false
@@ -16,9 +16,10 @@ metadata:
 **SERIAL:** never parallel `spawn_actor` / `save_current_level` with other heavy
 editor calls in the same turn (`skill_read_subskill("uefn", "batch_commands")`).
 
-Mesh and geometry work in UEFN is **editor-only** Python. Two engines cover it:
-`StaticMeshEditorSubsystem` (LODs / collision / UVs / Nanite) and
-`GeometryScriptingCore` (booleans, remesh, repair, bake — procedural mesh edits).
+Mesh and geometry work in UEFN prefers the thin modeling tools. `execute_python`
+with `StaticMeshEditorSubsystem` / `GeometryScriptingCore` is a **labelled last
+resort** for one reflection call that those tools cannot express — never a
+spawn/import/LOD loop (freezes UEFN). One editor mutator per assistant message.
 
 ## Hard rule — Static Meshes only (never Blueprints as the model)
 
@@ -42,25 +43,26 @@ Load the full piece/merge/UV/material checklist with
 
 1. **Pipeline/modeling tools**: `import_asset` / `export_asset`;
    `get_static_mesh_info`, `set_mesh_collision`.
-2. **`execute_python`** with `StaticMeshEditorSubsystem` / geometry-scripting
-   libraries for LOD generation, UVs, and procedural edits. Call
-   `describe_class({"class_name": "StaticMeshEditorSubsystem"})`
-   first — the mesh APIs are reflection-heavy.
-3. Load geometry recipes with
+2. Load geometry recipes with
    `skill_read_subskill("modeling", "geometry_scripting")` (booleans, remesh,
    repair, bone-weight transfer). Never IDE-Read `~/.claude/skills` /
    `~/.cursor/skills` / `references/*.md`.
+3. **Last resort:** `execute_python` for a single `StaticMeshEditorSubsystem` /
+   geometry-scripting call the thin tools cannot express. Confirm names with
+   `describe_class(class_name="StaticMeshEditorSubsystem")` first. Never loop
+   spawn/import/LOD in that script.
 
 ## Golden path (import + prep a static mesh)
 
 ```
-# FIRST: get_project_info() → content_root (e.g. /VideoTest/)
+# FIRST: get_project_info() → content_root (e.g. /MyProject/)
 import_asset({"source_file": "C:/models/rock.fbx",
-                          "destination_path": "/VideoTest/Meshes"})
+                          "destination_path": "/MyProject/Meshes"})
 # or omit destination_path / pass "" and let the listener auto-pin
-get_static_mesh_info({"asset_path": "/VideoTest/Meshes/rock"})   # verify import
-# LODs + collision via execute_python on StaticMeshEditorSubsystem (see below)
+get_static_mesh_info({"asset_path": "/MyProject/Meshes/rock"})   # verify import
 set_mesh_collision({...})
+# Last resort: one execute_python call on StaticMeshEditorSubsystem if the
+# thin tools cannot express the LOD/UV edit — never a loop
 save_current_level()
 ```
 
@@ -73,7 +75,7 @@ Full FBX/scale/Nanite/reimport playbook:
 1. Place / create temporary Static Mesh actors for construction pieces.
 2. Align pivots and transforms; keep purposeful material slots.
 3. Merge non-moving pieces with `EditorLevelLibrary.merge_static_mesh_actors`
-   into a new `SM_` package under `{content_root}Meshes` (e.g. `/VideoTest/Meshes`).
+   into a new `SM_` package under `{content_root}Meshes` (e.g. `/MyProject/Meshes`).
 4. Delete temporary construction actors if merge did not destroy them.
 5. UV layout → create/assign materials (`materials` pack) → collision / LODs
    or Nanite → `save_asset` → `save_current_level()`.
@@ -81,10 +83,14 @@ Full FBX/scale/Nanite/reimport playbook:
 Confirm method names with `describe_class` before running — see
 `mesh_build_workflow` for the merge options skeleton.
 
-## Common operations (execute_python)
+## Last-resort operations (`execute_python`)
+
+Only when `set_mesh_collision` / `get_static_mesh_info` cannot express the edit.
+One script, one asset — never a folder loop. Confirm names with `describe_class`
+first. This freezes UEFN if you iterate many meshes.
 
 ```python
-sm = unreal.EditorAssetLibrary.load_asset("/VideoTest/Meshes/rock")  # project path
+sm = unreal.EditorAssetLibrary.load_asset("/MyProject/Meshes/rock")  # project path
 sub = unreal.get_editor_subsystem(unreal.StaticMeshEditorSubsystem)
 # Auto LODs
 opts = unreal.EditorScriptingMeshReductionOptions()
@@ -101,9 +107,8 @@ Use `describe_class` to confirm method/enum names for this build before running.
 ## Hard rules
 
 - **Naming**: `SM_` static meshes, `SK_` skeletal meshes, `T_` textures,
-  `M_` / `MI_` materials; folders under `/Game/` (leading slash). In UEFN the
-  content root may be `/{ProjectName}/` — check `get_project_info` if `/Game`
-  doesn't resolve.
+  `M_` / `MI_` materials. Folders under `get_project_info().content_root`
+  (e.g. `/MyProject/Meshes`) — **never invent `/Game/Meshes`**.
 - **Import is not persisted until saved** — after `import_asset`, save the asset
   and `save_current_level()` or the island may not reference it.
 - **Nanite meshes ignore custom LODs and can't have per-vertex edits at runtime**

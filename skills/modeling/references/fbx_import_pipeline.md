@@ -15,11 +15,11 @@ import: materials pack `blender_handoff` / `texture_import`.
 ## Golden path (static mesh)
 
 ```
-# FIRST: get_project_info() → content_root (e.g. /VideoTest/)
+# FIRST: get_project_info() → content_root (e.g. /MyProject/)
 import_asset({"source_file": "C:/models/SM_Prop.fbx",
-              "destination_path": "/VideoTest/Meshes"})
+              "destination_path": "/MyProject/Meshes"})
 # or omit destination_path / pass "" and let the listener auto-pin
-get_static_mesh_info({"asset_path": "/VideoTest/Meshes/SM_Prop"})   # or actual imported name
+get_static_mesh_info({"asset_path": "/MyProject/Meshes/SM_Prop"})   # or actual imported name
 # LODs / Nanite / collision via StaticMeshEditorSubsystem (see modeling SKILL.md)
 set_mesh_collision({...})   # when the thin tool covers the case
 save_asset → save_current_level()
@@ -40,7 +40,7 @@ Always use `get_project_info().content_root` — never invent `/Game/Meshes`.
 Import options (combine meshes, import morphs, skeleton reuse) are Interchange /
 FBX dialog settings — when `import_asset` exposes them, set explicitly; otherwise
 `execute_python` with import task APIs after `uefn_editor_python_hints` /
-`describe_class`. Don't invent option names.
+`describe_class` — last resort, one asset, never a folder loop. Don't invent option names.
 
 ## Scale & axis triage
 

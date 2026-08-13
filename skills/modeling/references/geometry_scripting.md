@@ -15,8 +15,8 @@ the in-memory mesh do nothing until copied back.
 ## Load / write-back frame
 
 ```python
-# FIRST: get_project_info() → content_root (e.g. /VideoTest/)
-sm = unreal.EditorAssetLibrary.load_asset("/VideoTest/Meshes/rock")
+# FIRST: get_project_info() → content_root (e.g. /MyProject/)
+sm = unreal.EditorAssetLibrary.load_asset("/MyProject/Meshes/rock")
 dyn = unreal.DynamicMesh()
 opts = unreal.GeometryScriptCopyMeshFromAssetOptions()
 lod = unreal.GeometryScriptMeshReadLOD()
