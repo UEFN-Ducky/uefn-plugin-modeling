@@ -2,16 +2,18 @@
 source_plugin_id: modeling
 name: modeling
 description: "Model and process meshes in UEFN — import FBX/glTF, LODs, collision, UVs, Nanite, and Geometry Scripting (booleans, remesh, repair, bake)"
-license: Ducky Source-Available License v1.0
+license: MIT
 metadata:
   label: UEFN Modeling
-  version: 7
+  version: 8
   author: UEFN-Ducky
-  copyright: Copyright 2026 UEFN-Ducky
-  allow_redistribute: false
+  copyright: Copyright 2026 Mindful Path Company, LLC
+  allow_redistribute: true
 ---
 
 # UEFN Modeling — meshes and geometry
+
+**Epic UEFN MCP:** Settings → MCPs → **UEFN MCP (Epic)** (`unreal-mcp`). Bridge tools: `unreal__list_toolsets` → `unreal__describe_toolset` → `unreal__call_tool` (toolsets — not flat `unreal__create_entity`). Map: `skill_read_subskill("uefn", "epic_mcp")`. Ducky tools below stay for this skill's domain when Epic does not cover it.
 
 **SERIAL:** never parallel `spawn_actor` / `save_current_level` with other heavy
 editor calls in the same turn (`skill_read_subskill("uefn", "batch_commands")`).
