@@ -68,8 +68,9 @@ in a LOD chain (`modeling` SKILL.md). Generate LODs via
 
 ## Collision
 
-- Prefer simple shapes (box/sphere/capsule) via `set_mesh_collision` /
-  `add_simple_collisions`.
+- Prefer simple shapes (box/sphere/capsule) via the `set_mesh_collision` tool.
+  (`StaticMeshEditorSubsystem.add_simple_collisions` is an Unreal **Python** method,
+  not an MCP tool — only via `execute_python` when the tool cannot express the case.)
 - Complex-as-simple only when needed — costlier.
 - UCX from Blender: name proxies clearly; engine may still rebuild — verify in PIE.
 

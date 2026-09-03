@@ -1,7 +1,7 @@
 {
   "id": "modeling",
   "kind": "plugin",
-  "version": "1.0.20",
+  "version": "1.0.21",
   "label": "UEFN Modeling",
   "description": "Static mesh info and collision. Bundles the modeling skill.",
   "min_app_version": "1.0.0",
