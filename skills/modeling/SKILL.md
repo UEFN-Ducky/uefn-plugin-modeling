@@ -5,7 +5,7 @@ description: "Model and process meshes in UEFN — import FBX/glTF, LODs, collis
 license: MIT
 metadata:
   label: UEFN Modeling
-  version: 9
+  version: 10
   author: UEFN-Ducky
   copyright: Copyright 2026 Mindful Path Company, LLC
   allow_redistribute: true
@@ -13,10 +13,8 @@ metadata:
 
 # UEFN Modeling — meshes and geometry
 
-**Tool order (HARD):** 1) Official UEFN MCP first — `ducky_get_status`; when `epic_mcp_online` use nested `unreal__*` (`unreal__list_toolsets` → `unreal__describe_toolset` → `unreal__call_tool`; 5+ ops → ProgrammaticToolset `execute_tool_script`). 2) Ducky listener second (Epic-offline gaps + Ducky-only tools listed in this skill). 3) `execute_python` LAST — never a placement/layout path, even if Epic and listener already failed. Never spawn, move, or assign materials. Map: `skill_read_subskill("uefn", "epic_mcp")`.
-
 **SERIAL:** never parallel `spawn_actor` / `save_current_level` with other heavy
-editor calls in the same turn (`skill_read_subskill("uefn", "batch_commands")`).
+editor calls in the same turn (SERIAL: one mutating/editor call per assistant message.).
 
 Mesh and geometry work in UEFN prefers the thin modeling tools. `execute_python`
 with `StaticMeshEditorSubsystem` / `GeometryScriptingCore` is a **labelled last
@@ -128,3 +126,7 @@ Use `describe_class` to confirm method/enum names for this build before running.
 - `references/mesh_build_workflow.md` — piece → merge Static Mesh, no Blueprints as models
 - `references/geometry_scripting.md` — booleans, remesh, repair, bake
 - `references/fbx_import_pipeline.md` — FBX/glTF import, scale, Nanite/LOD, collision, reimport
+
+## Verify
+
+`get_static_mesh_info` / `validate_uefn_asset`.
