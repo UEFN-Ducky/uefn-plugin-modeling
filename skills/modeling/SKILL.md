@@ -5,7 +5,7 @@ description: "Model and process meshes in UEFN — import FBX/glTF, LODs, collis
 license: MIT
 metadata:
   label: UEFN Modeling
-  version: 10
+  version: 11
   author: UEFN-Ducky
   copyright: Copyright 2026 Mindful Path Company, LLC
   allow_redistribute: true
@@ -130,3 +130,11 @@ Use `describe_class` to confirm method/enum names for this build before running.
 ## Verify
 
 `get_static_mesh_info` / `validate_uefn_asset`.
+
+## 42.30 notes
+
+- Epic `editor_toolset.toolsets.static_mesh.StaticMeshTools` and `.primitive.PrimitiveTools`
+  inspect/edit static meshes and add primitive geometry when `epic_mcp_online`
+  (uefn `epic_toolsets`).
+- Skinned-mesh import fixed (inverse bind matrices, bind-pose drift, multi-root files).
+- Creating spline meshes no longer crashes the editor.
